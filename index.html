@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Norrœn Saga ― 北欧神話大全</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700;900&family=Noto+Serif+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0d13;
+    --bg-deep:#050709;
+    --panel:#12171f;
+    --panel-2:#171d27;
+    --line:#2a3341;
+    --frost:#9fd6e8;
+    --frost-dim:#5f8a99;
+    --gold:#c9a445;
+    --gold-dim:#8a7333;
+    --blood:#8a3a3a;
+    --ash:#b7bec9;
+    --ash-dim:#7a8290;
+    --parchment:#eae4d3;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--parchment);
+    font-family:'Noto Serif JP', serif;
+    min-height:100vh;
+    position:relative;
+    overflow-x:hidden;
+  }
+
+  /* ===== Aurora / sky background ===== */
+  .sky{
+    position:fixed; inset:0; z-index:-2;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(60,90,110,.35), transparent 60%),
+      linear-gradient(180deg, #060810 0%, #0a0d13 45%, #0d1119 100%);
+  }
+  .aurora{
+    position:fixed; inset:0; z-index:-1; opacity:.35; pointer-events:none;
+    background:
+      radial-gradient(60% 40% at 20% 10%, rgba(102,197,168,.18), transparent 60%),
+      radial-gradient(50% 35% at 75% 5%, rgba(120,170,220,.15), transparent 60%);
+    animation: drift 22s ease-in-out infinite alternate;
+  }
+  @keyframes drift{
+    0%{ transform: translateY(0) scale(1); }
+    100%{ transform: translateY(20px) scale(1.05); }
+  }
+  .stars{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:
+      radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,.5), transparent),
+      radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,.4), transparent),
+      radial-gradient(1.5px 1.5px at 40% 70%, rgba(255,255,255,.35), transparent),
+      radial-gradient(1.5px 1.5px at 85% 60%, rgba(255,255,255,.4), transparent),
+      radial-gradient(1px 1px at 55% 15%, rgba(255,255,255,.3), transparent),
+      radial-gradient(1.5px 1.5px at 10% 80%, rgba(255,255,255,.3), transparent);
+    background-repeat:no-repeat;
+  }
+
+  /* ===== rune divider ===== */
+  .rune-row{
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    color:var(--gold-dim); font-size:.9rem; letter-spacing:.3em;
+    margin:0 auto;
+  }
+  .rune-row .ln{ height:1px; width:60px; background:linear-gradient(90deg, transparent, var(--gold-dim), transparent); }
+
+  /* ===== header / hero ===== */
+  header.hero{
+    position:relative;
+    padding:90px 20px 60px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+    animation: heroAppear 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes heroAppear {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .eyebrow{
+    font-family:'Cinzel', serif;
+    letter-spacing:.5em;
+    font-size:.72rem;
+    color:var(--frost-dim);
+    text-transform:uppercase;
+    margin-bottom:22px;
+    animation: fadeIn 1.5s ease-out forwards;
+  }
+  h1.title{
+    font-family:'Cinzel Decorative', 'Cinzel', serif;
+    font-weight:900;
+    font-size:clamp(2.4rem, 7vw, 4.6rem);
+    letter-spacing:.04em;
+    background: linear-gradient(135deg, #fff 0%, var(--frost) 40%, var(--gold) 80%, #fff 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow:0 0 40px rgba(159,214,232,.15);
+    line-height:1.15;
+    animation: titleGlow 8s ease infinite alternate;
+  }
+  @keyframes titleGlow {
+    0% {
+      background-position: 0% 50%;
+      filter: drop-shadow(0 0 15px rgba(159, 214, 232, 0.2));
+    }
+    100% {
+      background-position: 100% 50%;
+      filter: drop-shadow(0 0 25px rgba(201, 164, 69, 0.3));
+    }
+  }
+
+  .hero-reading{
+    margin-top:16px;
+    font-size:.85rem;
+    letter-spacing:.35em;
+    color:var(--frost-dim);
+    animation: fadeIn 2s ease-out forwards;
+  }
+  .subtitle{
+    margin-top:18px;
+    font-size:1.05rem;
+    color:var(--ash);
+    letter-spacing:.08em;
+    animation: fadeIn 2s ease-out forwards;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .tree-wrap{
+    margin:38px auto 0;
+    max-width:520px;
+    opacity:.9;
+    animation: treeFloat 6s ease-in-out infinite alternate;
+  }
+  @keyframes treeFloat {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-8px); }
+  }
+  .tree-wrap svg{ width:100%; height:auto; display:block; }
+  .tree-wrap path, .tree-wrap circle{ vector-effect:non-scaling-stroke; }
+  .tree-wrap circle {
+    animation: orbPulse 3s ease-in-out infinite alternate;
+  }
+  .tree-wrap circle:nth-child(even) {
+    animation-delay: 1.5s;
+  }
+  @keyframes orbPulse {
+    0% {
+      r: 3.5;
+      opacity: 0.6;
+      filter: drop-shadow(0 0 2px var(--frost));
+    }
+    100% {
+      r: 5.5;
+      opacity: 1;
+      filter: drop-shadow(0 0 8px var(--frost));
+    }
+  }
+
+  /* ===== nav ===== */
+  nav.tabs{
+    position:sticky; top:0; z-index:40;
+    display:flex; justify-content:center; gap:2px;
+    background:rgba(10,13,19,.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding:0 10px;
+  }
+  nav.tabs button{
+    appearance:none; border:none; background:transparent; cursor:pointer;
+    font-family:'Cinzel', serif;
+    color:var(--ash-dim);
+    font-size:.82rem;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    padding:20px 22px;
+    position:relative;
+    transition:color .25s ease;
+  }
+  nav.tabs button .jp{ display:block; font-family:'Noto Serif JP',serif; letter-spacing:.05em; font-size:.95rem; margin-top:4px; color:inherit;}
+  nav.tabs button:hover{ color:var(--frost); }
+  nav.tabs button.active{ color:var(--gold); }
+  nav.tabs button.active::after{
+    content:""; position:absolute; left:18%; right:18%; bottom:0; height:2px;
+    background:linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  nav.tabs button:focus-visible{ outline:2px solid var(--frost); outline-offset:2px; }
+
+  main{ max-width:980px; margin:0 auto; padding:56px 22px 120px; }
+  section.panel{ display:none; animation:fadein .5s ease; }
+  section.panel.active{ display:block; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
+
+  .lead{
+    text-align:center; color:var(--ash); max-width:640px; margin:0 auto 54px;
+    font-size:1rem; line-height:2;
+  }
+  .count-note{
+    text-align:center; color:var(--gold-dim); font-family:'Cinzel', serif;
+    font-size:.72rem; letter-spacing:.2em; margin-top:-38px; margin-bottom:40px;
+  }
+
+  /* ===== saga cards (stories) ===== */
+  .saga{
+    position:relative;
+    background:linear-gradient(180deg, var(--panel), var(--panel-2));
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:34px 32px;
+    margin-bottom:28px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.03), 0 20px 40px -25px rgba(0,0,0,.7);
+  }
+  .saga::before{
+    content:""; position:absolute; left:0; top:16px; bottom:16px; width:3px;
+    background:linear-gradient(180deg, var(--gold), transparent);
+    opacity:.7;
+  }
+  .saga-head{ display:flex; align-items:baseline; gap:16px; flex-wrap:wrap; margin-bottom:14px; }
+  .saga-num{ font-family:'Cinzel', serif; color:var(--gold-dim); font-size:.85rem; letter-spacing:.2em; }
+  .saga h2{
+    font-family:'Cinzel', serif; font-weight:700;
+    font-size:1.5rem; color:var(--parchment); letter-spacing:.02em;
+  }
+  .saga .original{
+    font-family:'Cinzel', serif; font-style:italic; color:var(--frost-dim);
+    font-size:.92rem; letter-spacing:.05em;
+  }
+  .saga p{ color:var(--ash); line-height:2; font-size:.98rem; }
+  .saga p + p{ margin-top:12px; }
+  .saga .tag{
+    display:inline-block; margin-top:16px; margin-right:8px;
+    font-family:'Cinzel', serif; font-size:.68rem; letter-spacing:.14em;
+    color:var(--frost); border:1px solid var(--frost-dim); border-radius:2px;
+    padding:4px 10px; opacity:.85;
+  }
+
+  /* ===== knowledge grid ===== */
+  .know-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:22px; }
+  .know-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:4px;
+    padding:26px 24px; position:relative; overflow:hidden;
+  }
+  .know-card::after{
+    content:""; position:absolute; right:-30px; top:-30px; width:100px; height:100px;
+    background:radial-gradient(circle, rgba(159,214,232,.08), transparent 70%);
+  }
+  .know-card h3{
+    font-family:'Cinzel', serif; color:var(--frost); font-size:1.08rem;
+    letter-spacing:.05em; margin-bottom:6px;
+  }
+  .know-card .original{ font-family:'Cinzel', serif; font-style:italic; color:var(--gold-dim); font-size:.82rem; display:block; margin-bottom:12px; }
+  .know-card p{ color:var(--ash); font-size:.92rem; line-height:1.9; }
+
+  /* ===== glossary ===== */
+  .glossary{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
+  .word-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:4px;
+    padding:20px 22px; cursor:default;
+    transition:border-color .25s ease, transform .25s ease, background .25s ease;
+  }
+  .word-card:hover{ border-color:var(--gold-dim); background:var(--panel-2); transform:translateY(-3px); }
+  .word-jp{ font-size:1.08rem; color:var(--parchment); font-weight:500; }
+  .word-orig{
+    font-family:'Cinzel', serif; color:var(--gold); font-size:1.02rem;
+    letter-spacing:.04em; margin-top:4px;
+  }
+  .word-pron{ color:var(--frost-dim); font-size:.78rem; letter-spacing:.05em; margin-top:2px; }
+  .word-desc{ color:var(--ash-dim); font-size:.85rem; margin-top:10px; line-height:1.9; }
+
+  footer{
+    text-align:center; padding:40px 20px 70px; color:var(--ash-dim);
+    font-size:.78rem; letter-spacing:.1em; font-family:'Cinzel', serif;
+  }
+
+  @media (max-width:600px){
+    nav.tabs button{ padding:14px 12px; font-size:.7rem; }
+    .saga{ padding:26px 20px; }
+    .count-note{ margin-top:-30px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .aurora, header.hero, .eyebrow, .subtitle, .hero-reading, h1.title, .tree-wrap, .tree-wrap circle { animation:none !important; }
+    html{ scroll-behavior:auto; }
+    section.panel{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sky"></div>
+<div class="aurora"></div>
+<div class="stars"></div>
+
+<header class="hero">
+  <div class="eyebrow">Nine Realms · Æsir · Vanir</div>
+  <h1 class="title">Norrœn Saga</h1>
+  <p class="hero-reading">ノッレーン・サガ</p>
+  <p class="subtitle">北欧神話 ― 物語・知識・言葉の書</p>
+
+  <div class="tree-wrap" aria-hidden="true">
+    <svg viewBox="0 0 500 220" fill="none">
+      <path d="M250 220 L250 130" stroke="#8a7333" stroke-width="2"/>
+      <path d="M250 160 C 190 140, 150 120, 90 70" stroke="#5f8a99" stroke-width="1.5"/>
+      <path d="M250 150 C 200 130, 170 100, 130 40" stroke="#5f8a99" stroke-width="1.5"/>
+      <path d="M250 160 C 310 140, 350 120, 410 70" stroke="#5f8a99" stroke-width="1.5"/>
+      <path d="M250 150 C 300 130, 330 100, 370 40" stroke="#5f8a99" stroke-width="1.5"/>
+      <path d="M250 130 C 230 100, 220 70, 230 20" stroke="#c9a445" stroke-width="1.5"/>
+      <path d="M250 130 C 270 100, 280 70, 270 20" stroke="#c9a445" stroke-width="1.5"/>
+      <circle cx="90" cy="70" r="4" fill="#9fd6e8"/>
+      <circle cx="130" cy="40" r="4" fill="#9fd6e8"/>
+      <circle cx="410" cy="70" r="4" fill="#9fd6e8"/>
+      <circle cx="370" cy="40" r="4" fill="#9fd6e8"/>
+      <circle cx="230" cy="20" r="4" fill="#c9a445"/>
+      <circle cx="270" cy="20" r="4" fill="#c9a445"/>
+      <ellipse cx="250" cy="200" rx="150" ry="10" stroke="#2a3341" stroke-width="1"/>
+    </svg>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="セクション切り替え">
+  <button class="active" data-tab="stories" role="tab" aria-selected="true">SÖGUR<span class="jp">物語</span></button>
+  <button data-tab="knowledge" role="tab" aria-selected="false">FRÆÐI<span class="jp">知識</span></button>
+  <button data-tab="words" role="tab" aria-selected="false">ORÐ<span class="jp">単語</span></button>
+</nav>
+
+<main>
+
+  <section class="panel active" id="stories">
+    <p class="lead">氷と炎から世界が生まれた瞬間から、神々の黄昏で幕を閉じるその果てまで――北欧神話に伝わる主要な物語の数々。</p>
+    <p class="count-note">— XVIII TALES —</p>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">I.</span>
+        <h2>世界の創造 ― ユミルの死</h2>
+        <span class="original">Ymis dauði</span>
+      </div>
+      <p>すべての始まりには、燃えるように熱い国ムスペルヘイム(Múspellsheimr)と、凍てつく霧の国ニヴルヘイム(Niflheimr)の間に、ただ虚無だけが広がる裂け目「ギンヌンガガプ(Ginnungagap)」があった。両者の熱と冷気が触れ合う場所で、原初の巨人ユミル(Ymir)が生まれる。</p>
+      <p>ユミルの体から霜の巨人たちが増え、やがてオーディン(Óðinn)とその兄弟たちがユミルを殺し、その巨躯から世界を作り上げた。肉は大地に、血は海に、骨は山に、頭蓋骨は空になったという。</p>
+      <span class="tag">創世神話</span><span class="tag">Ymir</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">II.</span>
+        <h2>ミーミルの泉 ― オーディンの隻眼</h2>
+        <span class="original">Óðinn og Mímisbrunnr</span>
+      </div>
+      <p>知恵を渇望したオーディンは、世界樹ユグドラシルの根元に湧く「ミーミルの泉(Mímisbrunnr)」を訪ねた。この泉の水を飲む者は森羅万象の知識を得るが、番人ミーミル(Mímir)は代償を求める。オーディンは己の片目を泉に沈めることで、その知恵を手に入れた。</p>
+      <p>これ以降、オーディンは片目の神として描かれ、深遠な知識のためならば自らの肉体さえ差し出す神の性質を象徴する逸話として語り継がれている。</p>
+      <span class="tag">知恵</span><span class="tag">Odin</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">III.</span>
+        <h2>ルーン文字の獲得 ― 世界樹に吊るされた神</h2>
+        <span class="original">Hávamál — Óðinn á tré</span>
+      </div>
+      <p>オーディンはさらなる秘儀を求め、自らの槍で己を貫き、世界樹ユグドラシル(Yggdrasill)に9日9夜も吊るされ続けた。食べ物も水も与えられぬまま、下界を覗き込み続けたその果てに、ルーン文字(rúnar)の知識が彼のもとに現れたという。</p>
+      <p>この自己犠牲の物語は、詩「ハーヴァマール(Hávamál)」に記され、知は与えられるものではなく、苦しみの果てに「見出す」ものだという北欧的な世界観を伝えている。</p>
+      <span class="tag">自己犠牲</span><span class="tag">ルーン文字</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">IV.</span>
+        <h2>スレイプニルの誕生 ― 城壁を築いた巨人</h2>
+        <span class="original">Hvernig Sleipnir fæddist</span>
+      </div>
+      <p>アースガルズの城壁再建を請け負った匿名の石工は、太陽と月、そして女神フレイヤを花嫁に望んだ。神々は「たった一冬で成し遂げれば」という到底不可能な条件で契約を結ぶが、石工の連れる巨馬スヴァジルファリ(Svaðilfari)が驚異的な速さで石を運び、完成が目前に迫ってしまう。</p>
+      <p>焦った神々はロキを詰問し、彼は牝馬に姿を変えてスヴァジルファリを誘い出し、工期を狂わせた。正体を巨人だと見抜かれた石工はトールの一撃に斃れる。やがてロキは、自らが身ごもった八本脚の仔馬を産み落とす。これが後にオーディンの愛馬となるスレイプニル(Sleipnir)である。</p>
+      <span class="tag">Loki</span><span class="tag">Sleipnir</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">V.</span>
+        <h2>クヴァシルと詩の蜜酒</h2>
+        <span class="original">Skáldskaparmál — Óðrerir</span>
+      </div>
+      <p>アース神族とヴァン神族が和睦を結んだ際、両者が壺に唾を吐き交わして生まれたのが、この世で最も賢い者クヴァシル(Kvasir)であった。彼は二人の小人ファーラルとガーラルに殺され、その血は蜂蜜と混ぜられて「詩の蜜酒(Óðrerir)」となる。一口含んだ者は、たちまち詩人か賢者になるという。</p>
+      <p>この蜜酒はやがて巨人スットゥングの手に渡り、娘グンロズが山の奥深くで番をしていた。オーディンはベルヴェルクという偽名を名乗り、山に穴を穿ってもぐり込み、三夜をグンロズと過ごした褒美として蜜酒を三口で飲み干す。鷲に姿を変えて逃げ帰った彼は、蜜酒をアースガルズの器に吐き戻し、以来それは神々と詩人だけに許された恵みとなった。</p>
+      <span class="tag">Odin</span><span class="tag">詩の蜜酒</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">VI.</span>
+        <h2>至宝の鍛造 ― ロキの賭けと七つの宝物</h2>
+        <span class="original">Skáldskaparmál — Dvergasmíði</span>
+      </div>
+      <p>ロキが悪戯にトールの妻シヴの黄金の髪を刈り取ってしまった時、彼は詫びとして小人イヴァルディの息子たちに、本物のように伸びる黄金の髪と、常に追い風を受ける船スキーズブラズニル、必中の槍グングニルを鍛らせた。得意になったロキは、小人ブロックとエイトリの兄弟に「これ以上の宝は作れまい」と己の首を賭ける。</p>
+      <p>兄弟は黄金の猪と、九夜ごとに自らを分身させる腕輪ドラウプニル、そして鎚ミョルニルを鍛え上げた。虻に化けたロキが鍛冶の最中に瞼を刺したため、鎚の柄はわずかに短く仕上がったが、神々はそれでもミョルニルを最高の宝と裁定する。賭けに敗れたロキは、首こそ失わなかったものの、その口を糸で縫い合わされる屈辱を味わった。</p>
+      <span class="tag">至宝</span><span class="tag">Mjölnir</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">VII.</span>
+        <h2>イドゥンの黄金の林檎</h2>
+        <span class="original">Þjazi og Iðunn</span>
+      </div>
+      <p>若さを保つ黄金の林檎の番人、女神イドゥンは、ロキの誘いに乗ってアースガルズの外へ足を運んだ隙に、鷲の姿をした巨人シアジに攫われてしまう。林檎を失った神々はたちまち老い始め、事の元凶であるロキを問い詰めた。</p>
+      <p>ロキはフレイヤの隼の羽衣を借りて巨人の国へ飛び、イドゥンを木の実に変えて連れ帰る。追いすがるシアジを迎え撃つべく、神々は城壁の際に炎を焚き、鷲の翼はその炎に焼かれて力を失った。落ちてきたシアジは、待ち構えていた神々の手によって命を落とした。</p>
+      <span class="tag">Loki</span><span class="tag">Iðunn</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">VIII.</span>
+        <h2>スカジとニョルズ ― 足で選ばれた花婿</h2>
+        <span class="original">Skaði og Njörðr</span>
+      </div>
+      <p>父シアジを殺された巨人の娘スカジは、武装してアースガルズに乗り込み償いを求めた。神々は詫びとして、目隠しをした彼女に足だけを見せ、その中から夫を選ばせるという奇妙な取引を持ちかける。彼女は最も美しい足の持ち主をバルドルだと信じて選んだ。</p>
+      <p>だがその足の主は、海と豊穣を司る神ニョルズであった。山を愛するスカジと海を愛するニョルズの結婚生活は長く続かず、山では狼の遠吠えが、海辺では鴎の啼き声が互いの安眠を妨げたと詩は伝える。二人はやがて別々の道を歩むことになった。</p>
+      <span class="tag">Skaði</span><span class="tag">Njörðr</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">IX.</span>
+        <h2>トールと世界蛇 ― 釣りの逸話</h2>
+        <span class="original">Þórr og Miðgarðsormr</span>
+      </div>
+      <p>雷神トール(Þórr)は巨人ヒュミル(Hymir)と海に釣りに出た際、牛の頭を餌に、海の底に眠る世界蛇ヨルムンガンド(Jörmungandr)を釣り上げてしまう。海面に姿を現した大蛇とトールが睨み合う瞬間、恐れをなしたヒュミルが釣り糸を切ってしまい、蛇は再び海の底へ沈んでいった。</p>
+      <p>この二者の因縁は、世界の終わりラグナロクで再び雌雄を決することになる。</p>
+      <span class="tag">Thor</span><span class="tag">Jörmungandr</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">X.</span>
+        <h2>ウトガルザ・ロキの館 ― 幻惑の巨人国</h2>
+        <span class="original">Þórr í Útgörðum</span>
+      </div>
+      <p>トールとロキは従者シャールヴィとロスクヴァを連れてヨトゥンヘイムへ旅立ち、道中で出会った巨人スクリューミルの手袋の中で一夜を明かす。ウトガルザ・ロキの館に辿り着いた一行は、次々と力比べに挑まされることになった。</p>
+      <p>ロキは大食い競争で業火の化身に敗れ、シャールヴィは駆けっこで「思考」の化身に敗れる。トールは大杯を飲み干せず、猫を持ち上げることもできず、老婆との組み手で片膝をつくにとどまった。すべては幻術であったと明かされた後、その杯は実は海に通じ、猫の正体は世界蛇、老婆は「老い」そのものであったと知らされ、トールはむしろその健闘を讃えられたのだった。</p>
+      <span class="tag">Thor</span><span class="tag">幻術</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">XI.</span>
+        <h2>フルングニルとの決闘</h2>
+        <span class="original">Hrungnir</span>
+      </div>
+      <p>石の巨人フルングニルが「アースガルズを踏み潰し、フレイヤとシヴを奪う」と豪語したため、トールは彼に決闘を挑んだ。フルングニルは石の盾と巨大な砥石を携えて立ち向かうが、トールの従者シャールヴィの入れ知恵により、彼は盾を足元に敷いて空からの攻撃に備えてしまう。</p>
+      <p>トールが投じたミョルニルは飛来する砥石を粉砕し、その破片は今もトールの頭に残ったまま抜けないと伝えられる。鎚はそのままフルングニルの脳天を打ち砕いたが、倒れた巨人の脚がトールの上に覆いかぶさり、彼はわずか三歳のわが子マグニに助け出されるまで身動きが取れなかった。</p>
+      <span class="tag">Thor</span><span class="tag">Hrungnir</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">XII.</span>
+        <h2>フェンリル狼の拘束</h2>
+        <span class="original">Fjötrun Fenris</span>
+      </div>
+      <p>悪戯神ロキ(Loki)と女巨人の間に生まれた狼フェンリル(Fenrir)は、恐ろしい速さで成長した。神々は私たちが世界に災いをもたらすと予見し、鎖で縛ろうとするが二度失敗する。最後にドヴェルグ(小人族)が「音もなく切れぬ」魔法の紐グレイプニル(Gleipnir)を、猫の足音・女の髭・山の根など6つの不可能なものから編み上げた。</p>
+      <p>フェンリルはこの紐を怪しみ、「片方の神が己の手を口に入れるならば」と条件を出す。軍神テュール(Týr)が勇敢にも自らの右手を差し出し、フェンリルが拘束されたと悟った瞬間、その手を噛み切った。テュールの隻腕はこの物語に由来する。</p>
+      <span class="tag">Fenrir</span><span class="tag">Týr</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">XIII.</span>
+        <h2>ミョルニルの窃盗 ― トールの花嫁</h2>
+        <span class="original">Þrymskviða</span>
+      </div>
+      <p>雷神の武器ミョルニル(Mjǫllnir)を巨人スリュム(Þrymr)が盗み出し、美の女神フレイヤ(Freyja)を花嫁によこすなら返すと要求する。フレイヤが激怒して拒否したため、トールは自ら花嫁のヴェールを被り、巨人の国へ「変装した花嫁」として乗り込んだ。</p>
+      <p>婚礼の宴でハンマーが花嫁を祝福するために運ばれてくると、トールはすかさずそれを掴み取り、居並ぶ巨人たちを打ち倒したという、神話には珍しい滑稽譚である。</p>
+      <span class="tag">Mjölnir</span><span class="tag">ユーモア神話</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">XIV.</span>
+        <h2>ブリーシンガメンの首飾り</h2>
+        <span class="original">Brísingamen</span>
+      </div>
+      <p>フレイヤが四人の小人から一夜ずつを代償に手に入れたという首飾りブリーシンガメンは、彼女の美と豊穣を象徴する至宝であった。オーディンの命を受けたロキは蚤に姿を変えて彼女の閨に忍び込み、眠る隙にこの首飾りを盗み出す。</p>
+      <p>目覚めて盗難に気づいたフレイヤは激しくオーディンに詰め寄った。首飾りは結局彼女のもとへ返されたが、その代償としてフレイヤは二人の王に永遠の戦を命じたとも語られ、この因縁の戦いヒャズニンガの合戦は、後の時代まで語り草として残ることになる。</p>
+      <span class="tag">Freyja</span><span class="tag">Loki</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">XV.</span>
+        <h2>バルドルの死</h2>
+        <span class="original">Baldrs draumar</span>
+      </div>
+      <p>光と美の神バルドル(Baldr)が不吉な夢を見たため、母フリッグ(Frigg)は万物に「息子を傷つけない」と誓わせた。しかし取るに足らないヤドリギ(mistilteinn)だけは誓いを求められなかった。これを知ったロキはヤドリギの矢を作り、盲目の神ホズ(Höðr)に手渡してバルドルへ投げさせる。矢は光の神の胸を貫き、バルドルは命を落とした。</p>
+      <p>神々は冥界の女王ヘル(Hel)に蘇生を懇願するが、「全世界が涙するなら」という条件を、変装したロキただ一人が拒んだために叶わなかった。この事件がロキと神々の決別、そしてラグナロクへの引き金となる。</p>
+      <span class="tag">Baldr</span><span class="tag">Loki</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">XVI.</span>
+        <h2>ロキの罰</h2>
+        <span class="original">Hefnd goðanna</span>
+      </div>
+      <p>バルドルの死の後、神々の宴で悪態をつき続けたロキは、ついに正体を暴かれ追放される。捕らえられたロキは、我が子の腸で岩に縛り付けられ、頭上から毒蛇の毒が滴り落ち続ける責め苦を受けた。妻シギュン(Sigyn)が鉢で毒を受け止め続けるが、鉢が満ちて彼女がそれを空けに立つたび、毒がロキを苛み、その痛みが大地を揺るがす地震になるという。</p>
+      <span class="tag">Loki</span><span class="tag">罰</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">XVII.</span>
+        <h2>ラグナロク ― 神々の黄昏</h2>
+        <span class="original">Ragnarök</span>
+      </div>
+      <p>厳冬フィンブルヴェトル(Fimbulvetr)が三年続いた後、拘束を解かれたフェンリルとロキ、目覚めた世界蛇ヨルムンガンドが神々に牙を剥く。死者の爪から編まれた船ナグルファル(Naglfar)が氷の海を渡り、番人ヘイムダル(Heimdallr)は角笛ギャラルホルンを吹き鳴らして開戦を告げた。</p>
+      <p>決戦の野ヴィーグリーズでは、オーディンがフェンリルに、トールがヨルムンガンドと相討ちに、テュールが冥界の番犬と、ヘイムダルはロキと刺し違えて斃れる。炎の巨人スルトの剣が世界を焼き尽くし、大地は海へ沈む――しかしその底から新たな大地が浮かび上がり、バルドルが冥界より帰還し、生き延びた男女から新たな人類が始まるという再生の予言で、物語は締めくくられる。</p>
+      <span class="tag">終末</span><span class="tag">再生</span>
+    </article>
+
+    <article class="saga">
+      <div class="saga-head">
+        <span class="saga-num">XVIII.</span>
+        <h2>シグルズとファフニル ― 呪われた黄金</h2>
+        <span class="original">Völsunga saga — Sigurðr og Fáfnir</span>
+      </div>
+      <p>小人アンドヴァリから奪われた黄金の指輪アンドヴァラナウトには、「持つ者に破滅をもたらす」という呪いがかけられていた。この黄金を守る竜ファフニルを討つべく、鍛冶の名手レギンに育てられた英雄シグルズは、折れることのない剣グラムを鍛え上げ、竜の通り道に穴を掘って待ち伏せる。</p>
+      <p>地を這うファフニルの腹を下から貫いたシグルズは、その血を浴びて鳥の言葉を解する力を得、レギンが恩を仇で返そうと企んでいることを知って彼をも討つ。竜の黄金を手にした英雄はしかし、呪いの糸から逃れることはできず、この物語は後世、指輪をめぐる幾多の伝説と創作に霊感を与え続けることになる。</p>
+      <span class="tag">Sigurðr</span><span class="tag">呪いの黄金</span>
+    </article>
+  </section>
+
+  <section class="panel" id="knowledge">
+    <p class="lead">物語の背景に広がる世界観 ― 九つの世界、神々の眷属と至宝、そして神話を今日へ伝えた書物について。</p>
+
+    <div class="know-grid">
+      <div class="know-card">
+        <h3>世界樹ユグドラシル</h3>
+        <span class="original">Yggdrasill</span>
+        <p>全宇宙を貫いて立つ巨大なトネリコの木。その根は三方に分かれ、それぞれニヴルヘイム、ヨトゥンヘイム、アースガルズへと伸び、九つの世界すべてを支えている。</p>
+      </div>
+      <div class="know-card">
+        <h3>九つの世界</h3>
+        <span class="original">Níu heimar</span>
+        <p>アースガルズ(神々)、ヴァナヘイム(豊穣神)、アルフヘイム(妖精)、ミズガルズ(人間)、ヨトゥンヘイム(巨人)、スヴァルトアルフヘイム(小人)、ムスペルヘイム(炎)、ニヴルヘイム(氷霧)、ヘルヘイム(死者)から成る。</p>
+      </div>
+      <div class="know-card">
+        <h3>アース神族とヴァン神族</h3>
+        <span class="original">Æsir og Vanir</span>
+        <p>オーディンやトールら戦と統治の神々「アース神族」と、豊穣と自然を司る「ヴァン神族」は、かつて戦争を経て和睦し、人質交換によって一つの神々の共同体となった。</p>
+      </div>
+      <div class="know-card">
+        <h3>ヴァルハラと戦死者</h3>
+        <span class="original">Valhöll</span>
+        <p>オーディンの宮殿。戦場で名誉の死を遂げた戦士「エインヘリャル(einherjar)」を、女戦士ヴァルキュリャ(valkyrjur)が選び連れてくる。彼らはラグナロクに備え、日々戦い、宴を重ねる。</p>
+      </div>
+      <div class="know-card">
+        <h3>運命の三姉妹ノルン</h3>
+        <span class="original">Nornir</span>
+        <p>ウルズ(過去)・ヴェルザンディ(現在)・スクルド(未来)の三姉妹が、ユグドラシルの根元の泉のほとりで運命の糸を紡ぐ。神々でさえこの定めからは逃れられない。</p>
+      </div>
+      <div class="know-card">
+        <h3>虹の橋ビフレスト</h3>
+        <span class="original">Bifröst</span>
+        <p>人間の世界ミズガルズと神々の国アースガルズを結ぶ、燃える虹の橋。番人ヘイムダル(Heimdallr)が昼夜を問わず見張り、ラグナロクの到来を告げる角笛を吹く役目を負う。</p>
+      </div>
+      <div class="know-card">
+        <h3>オーディンの神器と眷属</h3>
+        <span class="original">Óðinn — gripir og fylgjur</span>
+        <p>見通す力を高める槍グングニル、両肩に止まり思考と記憶を運ぶ鴉フギンとムニン、飢えを分かち合う狼ゲリとフレキ、そして八本脚の愛馬スレイプニル。いずれも「知」と「越境」を司る彼の本質を映し出している。</p>
+      </div>
+      <div class="know-card">
+        <h3>トールの神器</h3>
+        <span class="original">Þórr — gripir</span>
+        <p>鎚ミョルニル、力を倍加させる帯メギンギョルズ、鎚を握るための鉄の手袋ヤルングレイプル、そして二頭の牡山羊が牽く戦車。山羊は屠られても骨さえ残せば翌朝には生き返るという。</p>
+      </div>
+      <div class="know-card">
+        <h3>巨人族ヨトゥン</h3>
+        <span class="original">Jötnar</span>
+        <p>神々にとって最大の脅威でありながら、その血脈は幾度となく神々自身の中にも流れ込んだ両義的な種族。オーディンの母も巨人であったように、秩序と混沌は単純には分かたれていない。</p>
+      </div>
+      <div class="know-card">
+        <h3>ドヴェルグ(小人族)</h3>
+        <span class="original">Dvergar</span>
+        <p>原初の巨人ユミルの肉に湧いた蛆から生まれたとも語られる、地中に住まう匠の種族。ミョルニルや黄金の腕輪ドラウプニルなど、神々の至宝の大半は彼らの槌から生まれている。</p>
+      </div>
+      <div class="know-card">
+        <h3>アールヴ(妖精)</h3>
+        <span class="original">Álfar</span>
+        <p>天上にほど近いアールヴヘイムに住むという光のアールヴは美しく輝く存在として語られる一方、地に潜む闇のアールヴは小人族と同一視されることも多く、両者の境界は写本によって揺らいでいる。</p>
+      </div>
+      <div class="know-card">
+        <h3>冥界ヘルとヘルヘイム</h3>
+        <span class="original">Hel og Helheimr</span>
+        <p>ロキの娘にして冥界の女王である女神ヘルは、体の半分が生者の色を、残る半分が屍の色をしているという。戦場でも老いでもなく、病や寿命によって世を去った者たちが静かにこの国へと集められる。</p>
+      </div>
+      <div class="know-card">
+        <h3>フォールクヴァングとフレイヤ</h3>
+        <span class="original">Fólkvangr</span>
+        <p>戦死者の半数はオーディンのヴァルハラへ、残る半数はフレイヤの治める広間フォールクヴァングへ召されるという。美と豊穣の女神は、同時に戦場の女神としての顔も併せ持っている。</p>
+      </div>
+      <div class="know-card">
+        <h3>炎の巨人スルトとムスペルヘイム</h3>
+        <span class="original">Surtr</span>
+        <p>世界の始まりより炎の国ムスペルヘイムを守り続ける巨人スルト。その手にある燃え盛る剣は、ラグナロクの日についに振り下ろされ、九つの世界すべてを炎で覆い尽くすと予言されている。</p>
+      </div>
+      <div class="know-card">
+        <h3>ルーン文字とフサルク</h3>
+        <span class="original">Rúnir — Fuþark</span>
+        <p>直線のみで刻めるよう工夫された二十四文字の古代文字体系。日常の記録のみならず呪いや占いにも用いられ、オーディン自身が世界樹に吊るされた末に得た知として神話に位置づけられている。</p>
+      </div>
+      <div class="know-card">
+        <h3>『エッダ』― 神話の源泉</h3>
+        <span class="original">Eddurnar</span>
+        <p>作者不詳の詩をまとめた『古エッダ』と、13世紀にスノッリ・ストゥルルソンが編んだ『新エッダ』。今日語られる北欧神話の物語の大半は、この二つの写本によって後世へ伝えられたものである。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="words">
+    <p class="lead">古ノルド語(Norrœnt mál)の響きを宿す、北欧神話の言葉を集めた語彙集。原語の綴りと意味を添えて。</p>
+
+    <div class="glossary">
+      <div class="word-card">
+        <div class="word-jp">神々の黄昏</div>
+        <div class="word-orig">Ragnarök</div>
+        <div class="word-pron">ラグナロク</div>
+        <div class="word-desc">定められた終焉へと世界が雪崩れ込む、神々と怪物たちの最後の決戦。滅びの果てに、新たな大地が静かに海より立ち上がるという。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">戦死者の館</div>
+        <div class="word-orig">Valhöll</div>
+        <div class="word-pron">ヴァルヘル</div>
+        <div class="word-desc">オーディンが選び抜いた勇者たちを迎える黄金の広間。壁は槍で、屋根は盾で葺かれ、来るべき終末の日まで宴と模擬戦が絶えることはない。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">世界樹</div>
+        <div class="word-orig">Yggdrasill</div>
+        <div class="word-pron">ユグドラシル</div>
+        <div class="word-desc">九つの世界すべてを枝と根に抱く、宇宙そのものとも呼ぶべき巨木。その梢は天を突き、根は死者の国にまで届くという。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">雷神の鎚</div>
+        <div class="word-orig">Mjölnir</div>
+        <div class="word-pron">ミョッルニル</div>
+        <div class="word-desc">一撃で山を砕くと恐れられた、トールの手に握られる鎚。柄がわずかに短いのは、鍛冶場に紛れ込んだ一匹の虻のいたずらゆえだと伝えられる。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">戦乙女</div>
+        <div class="word-orig">Valkyrja</div>
+        <div class="word-pron">ヴァルキュリャ</div>
+        <div class="word-desc">戦場の上空を駆け、名誉ある死を遂げた者だけを見定めてはヴァルハラへと導く乙女たち。その名は「戦死者を選ぶ者」を意味する。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">誉れの戦死者</div>
+        <div class="word-orig">Einherjar</div>
+        <div class="word-pron">エインヘリャル</div>
+        <div class="word-desc">ヴァルハラに召された魂たちの呼び名。日が昇れば刃を交え、日が沈めば傷を癒して宴に興じ、終末の朝を待ち続ける。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">狂戦士</div>
+        <div class="word-orig">Berserkr</div>
+        <div class="word-pron">ベルセルク</div>
+        <div class="word-desc">熊の毛皮をまとい、恐れも痛みも忘れて戦場を駆けた戦士たち。その恍惚の戦いぶりは、後世に「我を忘れる」を意味する言葉を残した。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">運命</div>
+        <div class="word-orig">Urðr</div>
+        <div class="word-pron">ウルズ</div>
+        <div class="word-desc">ノルンの長姉にしてその名でもある、「すでに紡がれたもの」の謂い。神々でさえ、この一語の前には抗う術を持たない。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">呪術</div>
+        <div class="word-orig">Seiðr</div>
+        <div class="word-pron">セイズ</div>
+        <div class="word-desc">未来を見通し、他者の運命を織り変えるための秘術。オーディンさえもこれを修めるため、己の威厳を賭したと語られる。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">宮廷詩人</div>
+        <div class="word-orig">Skáld</div>
+        <div class="word-pron">スカルド</div>
+        <div class="word-desc">王侯の傍らに侍り、英雄の武勲と神々の逸話を韻律に乗せて語り継いだ者たち。その言の葉こそが、今日に神話を運んだ舟である。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">虹の橋</div>
+        <div class="word-orig">Bifröst</div>
+        <div class="word-pron">ビフレスト</div>
+        <div class="word-desc">揺らめきながら天と地を結ぶ、燃える虹の道。番人ヘイムダルの瞳から逃れて渡り切れる者は、ただの一人もいないという。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">原初の裂け目</div>
+        <div class="word-orig">Ginnungagap</div>
+        <div class="word-pron">ギンヌンガガプ</div>
+        <div class="word-desc">炎の国と氷の国のあわいに口を開けていた、名づけようのない虚無。すべての生と形は、この静寂の裂け目から立ち上がった。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">世界蛇</div>
+        <div class="word-orig">Jörmungandr</div>
+        <div class="word-pron">ヨルムンガンド</div>
+        <div class="word-desc">人間の世界をぐるりと取り囲み、己の尾を咥えて眠る大蛇。その眠りが解かれる時、荒れ狂う海こそが終末の到来を告げる。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">霜の巨人</div>
+        <div class="word-orig">Hrímþursar</div>
+        <div class="word-pron">フリームスルサル</div>
+        <div class="word-desc">原初の巨人ユミルの血脈を引く、氷と嵐の眷属。神々にとっては永遠の宿敵でありながら、その血は幾度となく神々の中にも流れ込んだ。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">人間界</div>
+        <div class="word-orig">Miðgarðr</div>
+        <div class="word-pron">ミズガルズ</div>
+        <div class="word-desc">ユミルの睫毛から築かれたと伝わる、人間たちの住まう「中つ国」。神々の国とも巨人の荒野とも境を接する、脆くも尊い大地。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">大いなる冬</div>
+        <div class="word-orig">Fimbulvetr</div>
+        <div class="word-pron">フィンブルヴェトル</div>
+        <div class="word-desc">夏を挟むことなく三年続くと語られる、終末の前触れとしての酷寒。雪と氷嵐が世界を覆い尽くし、人の心にも争いの種を蒔く。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">外なる国</div>
+        <div class="word-orig">Útgarðr</div>
+        <div class="word-pron">ウトガルズ</div>
+        <div class="word-desc">既知の世界の果て、秩序の及ばぬ荒野に広がる巨人たちの領域。そこで交わされる幻惑は、力そのものよりも恐ろしいと知れる。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">生ける屍</div>
+        <div class="word-orig">Draugr</div>
+        <div class="word-pron">ドラウグ</div>
+        <div class="word-desc">塚に眠りながらもなお異形の力を保ち、夜ごと歩き出すと恐れられた死者。その怪力は生前の何倍にも増しているという。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">守護霊</div>
+        <div class="word-orig">Fylgja</div>
+        <div class="word-pron">フィルギャ</div>
+        <div class="word-desc">人にひとりずつ寄り添い、その運命をひそかに見守るとされる分身の霊。多くは獣の姿をとり、持ち主の性根を映し出すと語られる。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">精霊たち</div>
+        <div class="word-orig">Vættir</div>
+        <div class="word-pron">ヴェッティル</div>
+        <div class="word-desc">山や川、家の敷居にまで宿るとされる、名もなき無数の霊的存在。その機嫌を損ねぬよう、人々は日々の暮らしに細やかな敬意を払った。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">死者の爪の船</div>
+        <div class="word-orig">Naglfar</div>
+        <div class="word-pron">ナグルファル</div>
+        <div class="word-desc">死者の切られざる爪から編まれるという、終末に姿を現す禍々しい船。だからこそ死者の爪は必ず切り揃えねばならぬと戒められた。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">決戦の野</div>
+        <div class="word-orig">Vígríðr</div>
+        <div class="word-pron">ヴィーグリーズ</div>
+        <div class="word-desc">百里四方とも語られる、神々と巨人たちが雌雄を決するために選ばれた最後の平原。そこに立つ者すべてが、二度と故郷へ帰ることはない。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">屍を齧る竜</div>
+        <div class="word-orig">Niðhöggr</div>
+        <div class="word-pron">ニーズヘッグ</div>
+        <div class="word-desc">世界樹の根に絡みつき、絶えず樹を齧り続けるという竜。梢に棲む鷲との間で交わされる悪口を、栗鼠ラタトスクが日々運び届ける。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">八足の神馬</div>
+        <div class="word-orig">Sleipnir</div>
+        <div class="word-pron">スレイプニル</div>
+        <div class="word-desc">八本の脚を持ち、天と地と冥界のいずれをも駆け抜けるオーディンの愛馬。その出自は、ロキが牝馬に姿を変えたという数奇な逸話に由来する。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">必中の槍</div>
+        <div class="word-orig">Gungnir</div>
+        <div class="word-pron">グングニル</div>
+        <div class="word-desc">何を的にしても決して外れることのない、オーディンの手にある魔槍。誓いの場でこの穂先に触れることは、破れば呪いを招く重い約束を意味した。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">滴る黄金の腕輪</div>
+        <div class="word-orig">Draupnir</div>
+        <div class="word-pron">ドラウプニル</div>
+        <div class="word-desc">九夜ごとに己を分身させ、同じ重さの腕輪を八つ生み出すという黄金の輪。尽きせぬ富の象徴として、オーディンの手に握られている。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">畳める船</div>
+        <div class="word-orig">Skíðblaðnir</div>
+        <div class="word-pron">スキーズブラズニル</div>
+        <div class="word-desc">常に追い風を受けて進み、使わぬ時は布のように折り畳んでふところに収められるという、神々の船の中でも随一の至宝。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">思考と記憶</div>
+        <div class="word-orig">Huginn og Muninn</div>
+        <div class="word-pron">フギンとムニン</div>
+        <div class="word-desc">オーディンの両肩から日々世界へ飛び立つ、二羽の大鴉。「思考」と「記憶」の名を持つこの鳥たちの帰りを、彼は毎夕気を揉んで待つという。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">巨狼フェンリル</div>
+        <div class="word-orig">Fenrisúlfr</div>
+        <div class="word-pron">フェンリスウルフ</div>
+        <div class="word-desc">生まれながらに世界の破滅を約束されたと恐れられた狼。その顎は天と地を隔てるほどに大きく開くと、終末の詩は語る。</div>
+      </div>
+      <div class="word-card">
+        <div class="word-jp">高き者の言葉</div>
+        <div class="word-orig">Hávamál</div>
+        <div class="word-pron">ハーヴァマール</div>
+        <div class="word-desc">オーディン自身が語り手とされる箴言詩。客への礼儀から知恵の得方まで、生きるための処世訓が古の韻律に刻まれている。</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="rune-row"><span class="ln"></span>ᚱᚨᚷᚾᚨᚱᛟᚲ<span class="ln"></span></div>
+  <p style="margin-top:14px;">Norrœn goðafræði — 北欧神話の物語は、各地の写本や口承により細部が異なります</p>
+</footer>
+
+<script>
+  const buttons = document.querySelectorAll('nav.tabs button');
+  const panels = document.querySelectorAll('section.panel');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+      panels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected','true');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+</script>
+
+</body>
+</html>
